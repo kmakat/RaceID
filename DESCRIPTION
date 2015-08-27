@@ -1,0 +1,11 @@
+Package: RaceID
+Type: Package
+Title: Rare cell type identification.
+Version: 1.0
+Date: 2015-08-19
+Author: Dominic Grün
+Maintainer: Dominic Grün <dominic.gruen@gmail.com>
+Description: A method to identify rare cell types within a complex mixture of cells.
+License: MIT
+Imports: tsne, pheatmap, MASS, cluster, mclust, flexmix, lattice, fpc, amap, RColorBrewer, locfit
+LazyData: true

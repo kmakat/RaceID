@@ -1,0 +1,30 @@
+#' @export
+plotdiffgenes <- function(z,gene=g){
+  if ( ! is.list(z) ) stop("first arguments needs to be output of function diffgenes")
+  if ( length(z) < 5 ) stop("first arguments needs to be output of function diffgenes")
+  if ( sum(names(z) == c("z","cl1","cl2","cl1n","cl2n")) < 5 ) stop("first arguments needs to be output of function diffgenes")
+  if ( length(gene) > 1 ) stop("only single value allowed for argument gene")
+  if ( !is.numeric(gene) & !(gene %in% names(z$z)) ) stop("argument gene needs to be within rownames of first argument or a positive integer number")
+  if ( is.numeric(gene) ){ if ( gene < 0 | round(gene) != gene ) stop("argument gene needs to be within rownames of first argument or a positive integer number") }
+  x <- if ( is.null(dim(z$cl1)) ) z$cl1[gene] else t(z$cl1[gene,])
+  y <- if ( is.null(dim(z$cl2)) ) z$cl2[gene] else t(z$cl2[gene,])
+  plot(1:length(c(x,y)),c(x,y),ylim=c(0,max(c(x,y))),xlab="",ylab="Expression",main=gene,cex=0,axes=FALSE)
+  axis(2)
+  box()
+  u <- 1:length(x)
+  rect(u - .5,0,u + .5,x,col="red")
+  v <- c(min(u) - .5,max(u) + .5)
+  axis(1,at=mean(v),lab=paste(z$cl1n,collapse=","))
+  lines(v,rep(mean(x),length(v)))
+  lines(v,rep(mean(x)-sqrt(var(x)),length(v)),lty=2)
+  lines(v,rep(mean(x)+sqrt(var(x)),length(v)),lty=2)
+  
+  u <- ( length(x) + 1 ):length(c(x,y))
+  v <- c(min(u) - .5,max(u) + .5)
+  rect(u - .5,0,u + .5,y,col="blue")
+  axis(1,at=mean(v),lab=paste(z$cl2n,collapse=","))
+  lines(v,rep(mean(y),length(v)))
+  lines(v,rep(mean(y)-sqrt(var(y)),length(v)),lty=2)
+  lines(v,rep(mean(y)+sqrt(var(y)),length(v)),lty=2)
+  abline(v=length(x) + .5)
+}
